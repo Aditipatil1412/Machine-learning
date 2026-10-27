@@ -1,29 +1,44 @@
-# Exploratory Data Analysis and Visualization
+# Linear Regression and Logistic Regression
 
 ## Aim
 
-To perform Exploratory Data Analysis (EDA) and visualize a dataset to understand its structure, distribution, and relationships between variables.
+To implement Linear Regression and Logistic Regression algorithms and evaluate their performance on suitable datasets.
 
 ## Objectives
 
-* To understand the characteristics of a dataset.
-* To identify missing values and duplicate records.
-* To analyze numerical and categorical features.
-* To visualize data distributions and relationships between variables.
+* To understand regression and classification.
+* To implement Linear Regression for predicting continuous values.
+* To implement Logistic Regression for classification.
+* To evaluate model performance using suitable metrics.
 
 ## Theory
 
-Exploratory Data Analysis (EDA) is the process of examining and summarizing a dataset before applying machine learning algorithms. It helps identify patterns, trends, outliers, and relationships among variables.
+### 1. Linear Regression
 
-Pandas is used to inspect and summarize data, while Matplotlib and Seaborn help create visual representations.
+Linear Regression is a supervised machine learning algorithm used to predict continuous numerical values. It models the relationship between independent variables and a dependent variable.
 
-Common visualizations include:
+The simple linear regression equation is:
 
-* **Histogram:** Shows the distribution of numerical data.
-* **Box Plot:** Helps identify outliers and understand data spread.
-* **Scatter Plot:** Shows the relationship between two numerical variables.
-* **Correlation Heatmap:** Displays correlations among numerical features.
-* **Bar Chart:** Compares values across different categories.
+**y = mx + c**
+
+Where:
+
+* `y` is the predicted value.
+* `x` is the input feature.
+* `m` is the slope.
+* `c` is the intercept.
+
+Mean Absolute Error (MAE), Mean Squared Error (MSE), and the coefficient of determination (R²) can be used to evaluate regression performance.
+
+### 2. Logistic Regression
+
+Logistic Regression is a supervised classification algorithm commonly used for binary classification. It estimates the probability that an input belongs to a particular class.
+
+It uses the sigmoid function to convert a linear combination of input features into a probability between 0 and 1.
+
+The predicted probability can be converted into a class label using a selected threshold, commonly 0.5 for binary classification.
+
+Accuracy, precision, recall, F1-score, and the confusion matrix can be used to evaluate classification performance.
 
 ## Tools and Libraries
 
@@ -31,29 +46,29 @@ Common visualizations include:
 * Pandas
 * NumPy
 * Matplotlib
-* Seaborn
+* Scikit-learn
 * Jupyter Notebook
 
 ## Algorithm
 
 1. Import the required libraries.
-2. Load the dataset.
-3. Display the first few rows and dataset information.
-4. Check for missing values and duplicate records.
-5. Calculate descriptive statistics.
-6. Analyze numerical and categorical features.
-7. Create suitable graphs and visualizations.
-8. Interpret the patterns and relationships observed.
+2. Load suitable datasets for regression and classification.
+3. Select the input features and target variables.
+4. Split the data into training and testing sets.
+5. Create and train the Linear Regression model.
+6. Predict continuous values and evaluate the regression model.
+7. Create and train the Logistic Regression model.
+8. Predict class labels and evaluate the classification model.
+9. Display the results.
 
 ## Expected Output
 
-* Dataset preview and descriptive statistics.
-* Missing-value and duplicate-record analysis.
-* Histograms and box plots.
-* Scatter plots and correlation heatmap, where appropriate.
-* Important observations from the visualizations.
+* Actual and predicted values for Linear Regression.
+* Regression evaluation metrics.
+* Predicted class labels for Logistic Regression.
+* Classification accuracy and confusion matrix.
 
 ## Result
 
-Exploratory Data Analysis was performed, and visualizations were created to understand the distribution, patterns, and relationships present in the dataset.
+Linear Regression and Logistic Regression were implemented for their respective prediction tasks, and their performance was evaluated using suitable metrics.
 
