@@ -1,4 +1,4 @@
-# Experiment 10: Single-Layer Artificial Neural Network
+# Single-Layer Artificial Neural Network
 
 ## Aim
 
