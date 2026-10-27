@@ -1,4 +1,4 @@
-# Experiment 9: K-Means Clustering
+# K-Means Clustering
 
 ## Aim
 
