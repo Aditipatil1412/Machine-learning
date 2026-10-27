@@ -1,4 +1,4 @@
-# Experiment 6: K-Nearest Neighbors and Decision Tree Classification
+# K-Nearest Neighbors and Decision Tree Classification
 
 ## Aim
 
