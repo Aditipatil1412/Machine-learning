@@ -79,6 +79,7 @@ AI-ML-Lab/
     ├── README.md
     ├── Single_Layer_ANN.ipynb
     └── student-mat.csv
+```
 
 ## 🧪 List of Experiments
 
@@ -141,4 +142,4 @@ Government College of Engineering, Karad
 
 ## 📌 Note
 
-This repository is maintained for academic learning and practical implementation of Machine Learning concepts. Individual experiment folders contain their respective README files, notebooks, and datasets where applicable.
+This repository is maintained for academic learning and practical implementation of Artificial Intelligence and Machine Learning concepts. Individual experiment folders contain their respective README files, notebooks, and datasets where applicable.
