@@ -1,4 +1,4 @@
-# Experiment 5: Support Vector Machine for Classification
+# Support Vector Machine for Classification
 
 ## Aim
 
