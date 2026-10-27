@@ -1,4 +1,4 @@
-# Experiment 1: Data Preprocessing on a Raw Dataset
+# Data Preprocessing on a Raw Dataset
 
 ## Aim
 
