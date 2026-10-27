@@ -1,4 +1,4 @@
-# Experiment 7: Comparison of Regression Algorithms
+# Comparison of Regression Algorithms
 
 ## Aim
 
