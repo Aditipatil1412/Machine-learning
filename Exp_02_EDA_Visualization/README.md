@@ -1,4 +1,4 @@
-# Experiment 2: Exploratory Data Analysis and Visualization
+# Exploratory Data Analysis and Visualization
 
 ## Aim
 
