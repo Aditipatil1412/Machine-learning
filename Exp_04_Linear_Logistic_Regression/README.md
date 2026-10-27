@@ -1,4 +1,4 @@
-# Experiment 4: Linear Regression and Logistic Regression
+# Linear Regression and Logistic Regression
 
 ## Aim
 
