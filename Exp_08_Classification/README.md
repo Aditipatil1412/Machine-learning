@@ -1,4 +1,4 @@
-# Experiment 8: Comparison of Classification Algorithms
+# Comparison of Classification Algorithms
 
 ## Aim
 
