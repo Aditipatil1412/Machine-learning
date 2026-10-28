@@ -1,93 +1,149 @@
-# Early Forest Fire Prediction: Fire Risk Map + Prediction Panel
+# Early Forest Fire Prediction
 
-Live wildfire risk for the **Santa Clara County foothills (California)**, combining
-1. **Real satellite fire detections** (NASA FIRMS VIIRS), live with a free key, or a replay of real past days without one.
-2. **Live weather and soil conditions** (Open-Meteo), scored by an **XGBoost** model trained on 2020–2023 data.
+An AI/ML-based project for predicting forest fire risk using weather and soil conditions, XGBoost, and satellite fire detections.
 
-## Project layout
+## Project Overview
+
+This project combines machine learning predictions, live weather information, and satellite-based fire detections to visualize forest fire risk across monitored regions.
+
+### Key Features
+
+* Forest fire risk prediction using an XGBoost model.
+* Weather and soil condition analysis.
+* Interactive forest fire risk map.
+* Satellite fire hotspot visualization using NASA FIRMS data.
+* FastAPI backend and React frontend.
+* Risk classification into Low, Medium, and High categories.
+
+## Technologies Used
+
+* Python
+* XGBoost
+* Pandas and NumPy
+* FastAPI
+* React
+* Vite
+* Open-Meteo API
+* NASA FIRMS
+
+## Project Structure
+
+```text
+early-fire-prediction/
+├── backend/
+├── frontend/
+├── data_utils.py
+├── train_xgboost.py
+├── train_other_models.py
+├── calibrate_thresholds.py
+└── README.md
 ```
-data_utils.py  train_xgboost.py  train_other_models.py  calibrate_thresholds.py   <- ML scripts (project root)
-Trihourly_Weather_Dataset.csv                                                     <- training data (you add)
-backend/   FastAPI: main.py, routes/, services/, model/ (generated), data/ (you add the FIRMS csv)
-frontend/  React + Vite: Fire Risk Map and Prediction Panel
-```
 
-## 1. One-time setup (Windows PowerShell)
-```powershell
-# backend
+## Setup and Installation
+
+### 1. Backend Setup
+
+Open a terminal in the project directory and run:
+
+```bash
 cd backend
 python -m venv venv
+```
+
+Activate the virtual environment on Windows:
+
+```powershell
 venv\Scripts\activate
+```
+
+Install the backend dependencies:
+
+```bash
 pip install -r requirements.txt
+```
+
+Return to the project root:
+
+```bash
 cd ..
+```
+
+### 2. Train the Model
+
+Install the training dependencies:
+
+```bash
 pip install -r requirements-training.txt
+```
 
-# put these two files in place
-#   Trihourly_Weather_Dataset.csv            -> project root
-#   Wildfire_Data_2020-2023.csv              -> backend/data/
+Place the required training datasets in their documented locations, then run:
 
-# train + calibrate (about 10 seconds). ALWAYS run both, in this order
+```bash
 python train_xgboost.py
 python calibrate_thresholds.py
+```
 
-# frontend
+### 3. Frontend Setup
+
+Open another terminal:
+
+```bash
 cd frontend
 npm install
 ```
 
-## 2. Run
-```powershell
-# terminal 1
-cd backend ; venv\Scripts\activate ; uvicorn main:app --reload
-# terminal 2
-cd frontend ; npm run dev          # http://localhost:5173
+## Running the Project
+
+### Start the Backend
+
+From the backend directory, activate the virtual environment and run:
+
+```bash
+uvicorn main:app --reload
 ```
-Check **http://127.0.0.1:8000/status**. It should say `"ok": true`. If anything is wrong it lists the problem.
 
-## 3. Optional: live satellite data
-Get a free key at https://firms.modaps.eosdis.nasa.gov/api/map_key/ , then copy `backend/.env.example` to
-`backend/.env` and set `FIRMS_MAP_KEY=...`. Without a key the map **replays** real detections from
-`Wildfire_Data_2020-2023.csv` (default day 2020-08-20, the peak of the CZU/SCU fires); the map shows a
-REPLAY badge so it is never mistaken for live data. Any day: `/hotspots?date=2020-08-21`; list days: `/hotspots/dates`.
+The backend should be available at:
 
-## API
-| Endpoint | Purpose |
-|---|---|
-| `GET /status` | health check, model validation numbers, hotspot mode |
-| `GET /zones` | live conditions + model risk + score drivers for each monitored zone |
-| `GET /hotspots`, `/heatmap`, `/hotspots/dates` | satellite detections (live or replay) |
-| `POST /predict` | legacy 3-input estimate. **Unreliable** (see below), kept for compatibility |
+`http://127.0.0.1:8000`
 
-## How the model was evaluated (honest numbers)
-Trained on 2020–2022, tested on the **held-out year 2023** (a random split would leak near-duplicate
-3-hourly rows and inflate scores).
+### Start the Frontend
 
-| | ROC AUC | PR AUC (random = 0.084) |
-|---|---|---|
-| XGBoost (final) | 0.987 | 0.963 |
-| Gradient Boosting / SVM | 0.991 / 0.986 | 0.963 / 0.963 |
-| Logistic Regression | 0.928 | 0.789 |
+From the frontend directory, run:
 
-Run `python train_other_models.py` to reproduce the table. Risk levels use cutoffs learned from the 2023 holdout
-(`calibrate_thresholds.py`): **High** is about 93% precise and catches about 95% of fire rows; **Low** (the normal state, 90% of days) contains 0.3% fire rows; **Medium** is a rare, narrow band (about 1% of days) where roughly 1 in 5 rows is a fire.
+```bash
+npm run dev
+```
 
-## Limitations (please read before presenting)
-- **One training site.** Weather came from a single point (37.3 N, 121.5 W, see `final_dataset_centroid.ipynb` in the
-  original repo) and a day is labelled "fire" if FIRMS saw a hotspot anywhere in 37.1–37.5 N, 121.8–121.2 W. The model estimates
-  *regional fire activity today*, not independent per-site risk. Zones differ only through their own live readings.
-- **The model is driven mostly by surface pressure and soil conditions** (see "What drives this score"). They act as a seasonal
-  signal; air temperature/humidity/wind alone carry little information (3-input AUC about 0.53, hence `/predict` is unreliable).
-- **Scores are strongly bimodal.** The model is either confident there is no fire activity (Low) or confident there is (High); Medium is rare. A mostly-green map on an ordinary day is the expected, correct result.
-- Live soil layers differ from the ERA5 layers used for training and pressure is rescaled to the training site, so live scores are indicative.
-- 2020 is heavily over-represented in training (a record fire season), so raw model scores are not literal probabilities.
+Open the local address displayed in the terminal, usually:
 
-## Troubleshooting
-| Symptom | Fix |
-|---|---|
-| Red "Backend unreachable" banner | start uvicorn; check `VITE_API_URL` |
-| "Risk zones hidden: ..." banner | `/zones` failed: open `http://127.0.0.1:8000/zones` and read the `error` field |
-| `/status` says model not ready | run `train_xgboost.py` then `calibrate_thresholds.py` |
-| Sklearn/xgboost pickle warning | retrain in the current venv |
-| Hotspot count is 0 with a key set | genuinely no fires nearby; set `HOTSPOT_MODE=replay` to demo |
+`http://localhost:5173`
 
-Deploying: set `VITE_API_URL` in `frontend/.env.production` to **your** backend before `npm run build`.
+## Model Evaluation
+
+The project README reports the following evaluation results for the XGBoost model on held-out 2023 data:
+
+* ROC AUC: 0.987
+* PR AUC: 0.963
+
+These results are based on the existing project evaluation and are not a guarantee of real-world prediction accuracy.
+
+## Data Sources
+
+* Open-Meteo for weather and environmental data.
+* NASA FIRMS for satellite fire detections.
+
+Live satellite data requires an appropriate NASA FIRMS API key. Without one, the project can use historical fire detections in replay mode.
+
+## Limitations
+
+* The model was trained using data from a particular geographical region.
+* Predictions may not generalize to other regions.
+* Live environmental data may differ from the training data.
+* Model scores should be treated as indicative fire-risk estimates, not as guaranteed probabilities.
+
+## Author
+
+**Aditi Patil**
+
+Third-Year B.Tech Student
+Government College of Engineering, Karad
